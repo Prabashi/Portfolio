@@ -1,0 +1,17 @@
+---
+interface Props {
+	status: 'live' | 'wip' | 'archived';
+}
+
+const { status } = Astro.props;
+const styles = {
+	live: { dot: 'bg-up', text: 'text-up', label: 'LIVE' },
+	wip: { dot: 'bg-accent', text: 'text-accent', label: 'WIP' },
+	archived: { dot: 'bg-faint', text: 'text-faint', label: 'ARCHIVED' },
+}[status];
+---
+
+<span class:list={['inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wider', styles.text]}>
+	<span class:list={['h-1.5 w-1.5 rounded-full', styles.dot]} aria-hidden="true"></span>
+	{styles.label}
+</span>

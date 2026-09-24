@@ -1,0 +1,27 @@
+---
+// A design decision callout for project write-ups: what was chosen, why, and what it cost.
+interface Props {
+	title: string;
+	tradeoff?: string;
+}
+
+const { title, tradeoff } = Astro.props;
+---
+
+<aside class="panel my-6 overflow-hidden">
+	<div class="panel-head">
+		<span><span class="text-accent">▸</span> decision</span>
+	</div>
+	<div class="space-y-3 p-4 text-[15px] leading-relaxed">
+		<p class="font-mono text-sm font-bold text-fg">{title}</p>
+		<div class="text-muted [&>p+p]:mt-3"><slot /></div>
+		{
+			tradeoff && (
+				<p class="border-t border-line pt-3 text-sm text-muted">
+					<span class="font-mono text-xs tracking-wider text-down uppercase">trade-off </span>
+					{tradeoff}
+				</p>
+			)
+		}
+	</div>
+</aside>

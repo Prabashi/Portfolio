@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PlaceholderBadge from './PlaceholderBadge.astro';
+import StatusDot from './StatusDot.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	index: number;
+}
+
+const { project, index } = Astro.props;
+const { title, summary, status, stack, highlights, placeholder } = project.data;
+const href = `/projects/${project.id}/`;
+---
+
+<article class="panel group relative flex flex-col transition-colors hover:border-accent">
+	<div class="panel-head">
+		<span class="tabular">{String(index + 1).padStart(2, '0')}</span>
+		<span class="flex items-center gap-2">
+			{placeholder && <PlaceholderBadge />}
+			<StatusDot status={status} />
+		</span>
+	</div>
+	<div class="flex flex-1 flex-col gap-3 p-4">
+		<h3 class="font-mono text-base font-bold text-fg group-hover:text-accent">
+			<a href={href} class="after:absolute after:inset-0">{title}</a>
+		</h3>
+		<p class="text-sm text-muted">{summary}</p>
+		{
+			highlights.length > 0 && (
+				<ul class="space-y-1 font-mono text-xs text-fg">
+					{highlights.slice(0, 3).map((h) => (
+						<li class="flex gap-2">
+							<span class="text-up" aria-hidden="true">▲</span>
+							<span>{h}</span>
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<ul class="mt-auto flex flex-wrap gap-1.5 pt-2">
+			{stack.map((s) => <li class="chip">{s}</li>)}
+		</ul>
+	</div>
+</article>

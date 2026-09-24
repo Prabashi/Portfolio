@@ -1,0 +1,19 @@
+---
+// Wraps a diagram (ASCII code block, image or SVG) with a numbered caption.
+interface Props {
+	caption: string;
+	label?: string;
+}
+
+const { caption, label = 'fig' } = Astro.props;
+---
+
+<figure class="my-8">
+	<div class="[&_pre]:!m-0 [&_pre]:!text-[12.5px] [&_pre]:!leading-snug">
+		<slot />
+	</div>
+	<figcaption class="mt-2 font-mono text-xs text-faint">
+		<span class="text-accent">{label}.</span>{" "}
+		{caption}
+	</figcaption>
+</figure>

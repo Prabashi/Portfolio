@@ -1,0 +1,22 @@
+---
+import { STACK } from '../consts';
+
+// A slow ticker tape of the stack. Duplicated once so the loop is seamless.
+const items = [...STACK, ...STACK];
+---
+
+<div class="overflow-hidden border-b border-line bg-surface" aria-hidden="true">
+	<div
+		class="ticker-track flex w-max gap-8 py-1.5 font-mono text-[11px] tracking-wider text-muted uppercase"
+		style="animation: ticker 60s linear infinite;"
+	>
+		{
+			items.map((s, i) => (
+				<span class="flex items-center gap-2 whitespace-nowrap">
+					<span class={i % 3 === 2 ? 'text-down' : 'text-up'}>{i % 3 === 2 ? '▼' : '▲'}</span>
+					{s}
+				</span>
+			))
+		}
+	</div>
+</div>

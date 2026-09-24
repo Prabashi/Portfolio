@@ -1,0 +1,78 @@
+---
+title: 'Idempotent trade capture pipeline'
+summary: 'A post-trade pipeline that turns at-least-once Kafka delivery into exactly-once effects, with the outbox pattern and nightly reconciliation.'
+status: live
+stack: ['C#', '.NET 8', 'Kafka', 'PostgreSQL', 'Docker']
+highlights:
+  - '0 duplicate bookings across 40M replayed messages'
+  - 'consumer restarts are safe at any point'
+  - 'reconciliation breaks surfaced within 5 min'
+repo: 'https://github.com/TODO/trade-capture'
+order: 2
+featured: true
+pubDate: 2026-03-02
+placeholder: true
+---
+
+## Problem
+
+Trades arrive from upstream systems over Kafka. Kafka guarantees **at-least-once** delivery, so after a consumer
+crash or rebalance the same trade can arrive twice. Booking a trade twice is one of the worst things a post-trade
+system can do: positions, P&L and settlement instructions all go wrong at once.
+
+The goal was a pipeline where duplicates, retries and replays are **harmless by construction**, rather than a
+pipeline that tries to prevent them.
+
+## Architecture
+
+<Figure caption="Each hop is idempotent. The outbox makes the DB write and the downstream publish atomic.">
+
+```text
+              ┌──────────────────────── trade-capture service ─────────────────────────┐
+upstream      │                                                                        │
+┌────────┐    │ consume ─▶ validate ─▶ BEGIN TX                                        │
+│ Kafka  │ ─▶ │                         INSERT trade ON CONFLICT (idem_key) DO NOTHING │
+│ trades │    │                         INSERT outbox (event)                          │
+└────────┘    │                         COMMIT ─▶ commit Kafka offset                  │
+              │                                                                        │
+              │ outbox relay ─▶ publish BookedTrade ─▶ mark sent                       │
+              └────────────────────────────────────────────────────────────────────────┘
+                                                                            │
+                                                     nightly recon ◀────────┘  vs. custodian files
+```
+
+</Figure>
+
+## Key design decisions
+
+<Decision
+	title="Idempotency key derived from the business identity, not the message"
+	tradeoff="Upstream has to supply a stable trade ID and version. When it can't, we hash the economic fields, which means two genuinely identical trades need an extra discriminator."
+>
+	The key is `(source_system, trade_id, version)`, enforced by a unique index. A replayed message hits
+	`ON CONFLICT DO NOTHING` and becomes a no-op. The database gives the guarantee, not the application code.
+</Decision>
+
+<Decision title="Transactional outbox instead of dual writes">
+	Writing to the database and then publishing to Kafka as two separate steps loses events when the process dies
+	between them. The event goes into an `outbox` table in the same transaction as the trade, and a relay
+	publishes it afterwards. Downstream consumers are idempotent too, so the relay can safely publish twice.
+</Decision>
+
+<Decision
+	title="Commit offsets after the DB commit"
+	tradeoff="A crash between the DB commit and the offset commit means reprocessing, which is fine, because it's idempotent."
+>
+	Offsets are committed only after the transaction succeeds. Combined with the idempotency key, this gives
+	exactly-once **effects** without Kafka transactions.
+</Decision>
+
+## Results
+
+Replaying 40M production-shaped messages with random consumer kills produced zero duplicate bookings and zero
+lost trades. Reconciliation against custodian files caught three upstream data issues in the first month.
+
+## What I'd do differently
+
+I'd make the outbox relay use Postgres logical replication (CDC) instead of polling, which cuts publish latency
+and load on the table.

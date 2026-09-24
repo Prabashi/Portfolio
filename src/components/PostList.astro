@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import PlaceholderBadge from './PlaceholderBadge.astro';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+	showDescription?: boolean;
+}
+
+const { posts, showDescription = false } = Astro.props;
+---
+
+<ul class="divide-y divide-line">
+	{
+		posts.map((post) => (
+			<li>
+				<a
+					href={`/blog/${post.id}/`}
+					class="group grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[7rem_1fr]"
+				>
+					<FormattedDate date={post.data.pubDate} class="font-mono text-xs text-faint sm:pt-1" />
+					<div>
+						<div class="flex flex-wrap items-center gap-2">
+							<h3 class="font-medium text-fg transition-colors group-hover:text-accent">
+								{post.data.title}
+							</h3>
+							{post.data.draft && <span class="chip">draft</span>}
+							{post.data.placeholder && <PlaceholderBadge />}
+						</div>
+						{post.data.series && (
+							<p class="font-mono text-xs text-faint">
+								{post.data.series}
+								{post.data.seriesPart && ` · part ${post.data.seriesPart}`}
+							</p>
+						)}
+						{showDescription && <p class="mt-1 text-sm text-muted">{post.data.description}</p>}
+					</div>
+				</a>
+			</li>
+		))
+	}
+</ul>

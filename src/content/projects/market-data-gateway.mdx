@@ -1,0 +1,55 @@
+---
+title: 'Market data gateway'
+summary: 'Normalises multi-venue feeds into one model and fans out to thousands of browser clients with per-client conflation.'
+status: wip
+stack: ['C#', 'ASP.NET Core', 'SignalR', 'Redis', 'React', 'TypeScript']
+highlights:
+  - '5k concurrent clients per node'
+  - 'slow clients never block fast ones'
+  - 'snapshot + delta recovery in < 200ms'
+repo: 'https://github.com/TODO/md-gateway'
+demo: 'https://example.com/demo/market-data'
+order: 3
+featured: true
+pubDate: 2026-07-18
+placeholder: true
+---
+
+## Problem
+
+Venue feeds tick far faster than a browser can render, and client connections vary wildly: a trader on the
+office network and one on hotel Wi-Fi subscribe to the same symbols. A naive fan-out either drops data for
+everyone or lets the slowest client build an unbounded queue in server memory.
+
+## Architecture
+
+<Figure caption="Per-client conflation: each client sees the latest state, at the rate it can consume.">
+
+```text
+ venue A ─┐                                    ┌─▶ client queue (latest-per-key) ─▶ ws ─▶ trader 1
+ venue B ─┼─▶ normalise ─▶ book cache (Redis) ─┼─▶ client queue (latest-per-key) ─▶ ws ─▶ trader 2
+ venue C ─┘      │                              └─▶ client queue (latest-per-key) ─▶ ws ─▶ trader N
+                 └─▶ snapshot service ◀──── (re)connect: snapshot, then deltas from seq#
+```
+
+</Figure>
+
+## Key design decisions
+
+<Decision
+	title="Conflate per client, keyed by symbol"
+	tradeoff="Clients can miss intermediate ticks. That's right for a price display and wrong for a trade blotter, which uses a separate lossless stream."
+>
+	Each connection has a small dictionary of pending updates keyed by symbol. A new tick for the same symbol
+	overwrites the pending one. Memory per client is bounded by the number of subscribed symbols, whatever the
+	tick rate.
+</Decision>
+
+<Decision title="Sequence numbers on every delta">
+	Clients track the last sequence number they applied. After a gap or reconnect they request a snapshot and
+	resume from there, so the UI can never show a book built from mismatched updates.
+</Decision>
+
+## Status
+
+In progress: adding an order book depth view in the React client and load tests with k6.

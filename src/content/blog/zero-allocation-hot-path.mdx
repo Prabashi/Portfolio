@@ -1,0 +1,23 @@
+---
+title: 'Zero-allocation hot paths: Span<T>, ArrayPool and struct events'
+description: 'Keeping the GC out of your p99 latency, one allocation at a time.'
+pubDate: 2026-09-20
+tags: ['dotnet', 'csharp', 'performance']
+series: '.NET for trading systems'
+seriesPart: 3
+draft: true
+placeholder: true
+---
+
+_Draft: visible in `astro dev`, hidden from production builds until `draft: true` is removed._
+
+## Measure first
+
+Start with `[MemoryDiagnoser]` in BenchmarkDotNet and a dotnet-counters trace of `gen-0-gc-count` under load.
+
+## Outline
+
+- Parsing with `ReadOnlySpan<byte>` instead of strings
+- Renting buffers from `ArrayPool<T>.Shared`
+- `readonly struct` events in a pre-sized ring buffer
+- Avoiding closures and boxing in LINQ-free hot loops

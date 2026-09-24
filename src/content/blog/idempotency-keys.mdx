@@ -1,0 +1,58 @@
+---
+title: 'Idempotency keys: making at-least-once delivery safe'
+description: 'Exactly-once delivery is a myth, but exactly-once effects are not. A practical pattern for .NET consumers backed by a relational database.'
+pubDate: 2026-08-02
+tags: ['dotnet', 'kafka', 'distributed-systems', 'postgres']
+series: '.NET for trading systems'
+seriesPart: 2
+placeholder: true
+---
+
+Every message broker you're likely to use in production delivers **at least once**. Consumers crash, partitions
+rebalance, and producers retry after timeouts. Sooner or later your handler sees the same message twice.
+
+You can't prevent that. You can make it harmless.
+
+## Pick the right key
+
+An idempotency key must identify the **business fact**, not the message carrying it. The Kafka offset is a bad
+key, because a producer retry creates a new offset for the same trade. A good key comes from the domain:
+
+| source             | key                                   |
+| ------------------ | ------------------------------------- |
+| trade feed         | `(source, trade_id, version)`         |
+| payment instruction | `(client_ref, value_date)`           |
+| API request        | client-supplied `Idempotency-Key` header |
+
+## Let the database enforce it
+
+```sql
+CREATE UNIQUE INDEX ux_trades_idem ON trades (source, trade_id, version);
+```
+
+```csharp
+await using var tx = await db.BeginTransactionAsync(ct);
+
+var inserted = await db.ExecuteAsync("""
+    INSERT INTO trades (source, trade_id, version, payload)
+    VALUES (@Source, @TradeId, @Version, @Payload::jsonb)
+    ON CONFLICT (source, trade_id, version) DO NOTHING
+    """, trade, tx);
+
+if (inserted == 1)
+{
+    await outbox.EnqueueAsync(new TradeBooked(trade.Id), tx); // same transaction
+}
+
+await tx.CommitAsync(ct);
+consumer.Commit(result); // only after the DB commit
+```
+
+If the process dies anywhere in there, the message is redelivered and the insert becomes a no-op. The
+duplicate costs one index lookup.
+
+## The rule of thumb
+
+> Commit your side effects and your idempotency record atomically, then acknowledge the message.
+
+Everything else, like retries, replays and reprocessing a whole topic after a bug fix, gets easy once that holds.

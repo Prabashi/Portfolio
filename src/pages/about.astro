@@ -1,63 +1,113 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import PlaceholderBadge from '../components/PlaceholderBadge.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { LINKS, SITE } from '../consts';
+import Layout from '../layouts/Layout.astro';
+
+// TODO: confirm order, years and titles. Listed newest first.
+const timeline = [
+	{
+		org: 'GIC',
+		period: '20XX – now',
+		role: 'Software Engineer',
+		note: 'Investment platforms for a sovereign wealth fund',
+	},
+	{
+		org: 'WSO2',
+		period: '20XX – 20XX',
+		role: 'Software Engineer',
+		note: 'Integration and API infrastructure',
+	},
+	{
+		org: 'DirectFN',
+		period: '20XX – 20XX',
+		role: 'Software Engineer',
+		note: 'Trading and market data platforms for regional exchanges and brokers',
+	},
+];
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<Layout title="About" description={`How I spent ${SITE.yearsInIndustry} years building capital markets technology.`}>
+	<div class="container-page pt-14">
+		<p class="label">/about</p>
+		<div class="mt-2 flex flex-wrap items-center gap-3">
+			<h1 class="text-3xl font-semibold tracking-tight text-fg">About</h1>
+			<PlaceholderBadge />
+		</div>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+		<div class="mt-10 grid gap-12 lg:grid-cols-[1fr_18rem]">
+			<!-- TODO: rewrite in your own voice. Keep it a story, not a CV. -->
+			<div class="prose">
+				<p class="text-xl leading-relaxed">
+					I've spent the last {SITE.yearsInIndustry} years building software where a wrong number costs real money
+					and a slow one costs a trade.
+				</p>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+				<h2>DirectFN: learning where the latency hides</h2>
+				<p>
+					I started at DirectFN, building trading and market data platforms used by brokers and exchanges across
+					the Middle East and South Asia. It was the best possible introduction to the domain: order types,
+					market sessions, corporate actions, and the difference between a system that works and one that works
+					at the open. I learned to read a flame graph before I learned to write a design doc.
+				</p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+				<h2>WSO2: thinking in platforms</h2>
+				<p>
+					At WSO2 I moved one layer down, to integration and API infrastructure that other teams build on. The
+					lesson was about contracts: versioning, backward compatibility, and designing so the next engineer, who
+					you'll never meet, can't easily misuse your API. It changed how I write code for everyone after.
+				</p>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
+				<h2>GIC: correctness at scale</h2>
+				<p>
+					At GIC I work on platforms that support investment decisions for a sovereign wealth fund. The problems
+					are less about microseconds and more about correctness under failure: idempotent processing,
+					reconciliation, auditability, and systems that are calm to operate at 3am. This is where most of the
+					ideas in my <a href="/blog">blog series</a> come from.
+				</p>
+
+				<h2>What I care about</h2>
+				<ul>
+					<li><strong>Boring, explicit designs.</strong> A single writer beats a clever lock.</li>
+					<li><strong>Failure as a first-class path.</strong> Retries, replays and duplicates are normal, not edge cases.</li>
+					<li><strong>Writing things down.</strong> Design notes outlive the code and the people who wrote it.</li>
+				</ul>
+
+				<p>
+					Outside work: TODO, a line or two about you as a person (it's what people remember from an about
+					page).
+				</p>
+			</div>
+
+			<aside class="space-y-6">
+				<div class="panel">
+					<div class="panel-head">experience</div>
+					<ol class="relative p-4">
+						{
+							timeline.map((t, i) => (
+								<li class="relative border-l border-line pb-6 pl-5 last:pb-0">
+									<span
+										class:list={[
+											'absolute top-1.5 -left-[4.5px] h-2 w-2 rounded-full',
+											i === 0 ? 'bg-accent' : 'bg-line',
+										]}
+										aria-hidden="true"
+									/>
+									<p class="font-mono text-sm font-bold text-fg">{t.org}</p>
+									<p class="font-mono text-xs text-faint tabular">{t.period}</p>
+									<p class="mt-1 text-sm text-fg">{t.role}</p>
+									<p class="text-sm text-muted">{t.note}</p>
+								</li>
+							))
+						}
+					</ol>
+				</div>
+				<div class="panel p-4">
+					<p class="text-sm text-muted">Want the full version?</p>
+					<a href={LINKS.resume} class="btn btn-primary mt-3">résumé.pdf <span aria-hidden="true">↓</span></a>
+					<SocialLinks class="mt-4" />
+				</div>
+			</aside>
+		</div>
+	</div>
 </Layout>

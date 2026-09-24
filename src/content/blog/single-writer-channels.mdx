@@ -1,0 +1,65 @@
+---
+title: 'The single-writer principle with System.Threading.Channels'
+description: 'Why the fastest way to share state between threads is often not to share it, and how Channels make that easy in .NET.'
+pubDate: 2026-06-14
+tags: ['dotnet', 'csharp', 'concurrency']
+series: '.NET for trading systems'
+seriesPart: 1
+placeholder: true
+---
+
+When several threads need to update the same state, like an order book, a position or a cache, the reflex is to
+reach for a `lock`. It's correct, but under contention it serialises your threads *and* makes them fight over
+the lock's cache line. You pay for the parallelism and get none of it.
+
+The **single-writer principle** flips this around: exactly one thread owns the state, and everybody else sends
+it messages.
+
+## The shape of it
+
+<Figure caption="Many producers, one consumer that owns the state outright.">
+
+```text
+producer ─┐
+producer ─┼─▶ [ bounded channel ] ─▶ owner thread ─▶ state (no locks)
+producer ─┘
+```
+
+</Figure>
+
+```csharp
+var channel = Channel.CreateBounded<OrderCommand>(new BoundedChannelOptions(capacity: 65_536)
+{
+    SingleReader = true,          // enables a faster reader implementation
+    SingleWriter = false,
+    FullMode = BoundedChannelFullMode.Wait, // backpressure instead of unbounded memory
+});
+
+// The only code that ever touches `book`.
+async Task RunMatcherAsync(ChannelReader<OrderCommand> reader, OrderBook book, CancellationToken ct)
+{
+    while (await reader.WaitToReadAsync(ct))
+    {
+        while (reader.TryRead(out var cmd))
+        {
+            book.Apply(cmd);
+        }
+    }
+}
+```
+
+The inner `TryRead` loop matters: it drains everything available without an `await` per item, which is where
+most of the throughput comes from.
+
+## Why it's faster
+
+- **No contention.** The owner never waits on a lock, and producers contend only on the channel's enqueue.
+- **Cache-friendly.** The state stays hot in one core's cache instead of bouncing between cores.
+- **Deterministic.** Commands are applied in one order, which you can log and replay.
+
+## Where it hurts
+
+One writer means one core. If a single owner can't keep up, you shard: one owner per symbol group, per account
+range, or per partition. The hard part of the design then becomes choosing the shard key.
+
+In [part 2](/blog/idempotency-keys/) we'll look at what happens when the commands arrive more than once.

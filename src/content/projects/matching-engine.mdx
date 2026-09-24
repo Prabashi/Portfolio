@@ -1,0 +1,88 @@
+---
+title: 'Limit order book & matching engine'
+summary: 'A price-time priority matching engine in .NET with a single-writer core, deterministic replay and a WebSocket market data feed.'
+status: live
+stack: ['C#', '.NET 8', 'Channels', 'SignalR', 'React']
+highlights:
+  - '~1.1M orders/s on one core (p99 < 12µs)'
+  - 'zero allocations on the matching hot path'
+  - 'bit-for-bit deterministic replay from the journal'
+repo: 'https://github.com/TODO/matching-engine'
+demo: 'https://example.com/demo/order-book'
+order: 1
+featured: true
+pubDate: 2026-05-10
+placeholder: true
+---
+
+## Problem
+
+Most toy matching engines are built around a `lock` on the order book. That works until you add a second
+producer, and then you get an engine whose throughput falls as you add cores, and whose results depend on thread
+scheduling. That is a nightmare to debug and impossible to audit.
+
+I wanted an engine that is **fast, deterministic and replayable**: given the same input journal, it must produce
+exactly the same trades, every time, on any machine.
+
+## Architecture
+
+<Figure caption="Order flow. Only the matcher thread ever touches the book.">
+
+```text
+gateways             sequencer             matcher (1 thread)          publishers
+┌────────────┐       ┌──────────────┐      ┌────────────────────┐      ┌──────────────┐
+│ FIX / REST │  ─┐   │ assign seq#  │      │ OrderBook          │ ───▶ │ market data  │
+└────────────┘   ├─▶ │ append to    │ ───▶ │  bids: price→FIFO  │      └──────────────┘
+┌────────────┐   │   │ journal      │ chan │  asks: price→FIFO  │      ┌──────────────┐
+│ WebSocket  │  ─┘   └──────────────┘      │ emits fills, acks, │ ───▶ │ drop-copy /  │
+└────────────┘                             │ rejects            │      │ trade store  │
+                                           └────────────────────┘      └──────────────┘
+```
+
+</Figure>
+
+Inbound orders from any number of gateways are stamped with a sequence number and appended to a journal
+**before** they reach the matcher. The matcher is a single thread reading from a bounded
+`System.Threading.Channels` channel. Its outputs are events (acks, fills, rejects, book deltas) fanned out to
+publishers on other threads. The market data publisher pushes book deltas to browsers over SignalR.
+
+## Key design decisions
+
+<Decision
+	title="Single-writer matcher behind a bounded channel"
+	tradeoff="One matcher per instrument group caps throughput per group at one core. Scaling out means sharding by symbol, which is fine for an exchange but complicates cross-instrument orders."
+>
+	The order book has exactly one writer, so it needs no locks, no `Interlocked`, and no memory barriers
+	inside the matching loop. A `BoundedChannel` with `SingleReader = true` gives backpressure for free: when the
+	matcher falls behind, gateways slow down instead of the process running out of memory.
+</Decision>
+
+<Decision
+	title="Journal first, then match"
+	tradeoff="Every order pays for a journal append before it can match. Batching fsyncs keeps the cost to a few microseconds, but it isn't zero."
+>
+	Sequencing and journaling happen before matching, so the journal is the source of truth. On restart the engine
+	replays the journal and rebuilds the book exactly. The same property makes production incidents reproducible on a
+	laptop.
+</Decision>
+
+<Decision title="Pre-allocated order pool and struct events">
+	Orders live in a pooled array and are referenced by index, and output events are `readonly struct`s written
+	into a ring buffer. After warm-up the hot path allocates nothing, so GC pauses stop appearing in p99 latency.
+</Decision>
+
+## Results
+
+| metric                | value      |
+| --------------------- | ---------- |
+| throughput (1 core)   | ~1.1M ops/s |
+| p50 / p99 match       | 2µs / 12µs |
+| allocations (hot path) | 0 B        |
+
+_Numbers from BenchmarkDotNet on a TODO machine. Replace with your own._
+
+## What I'd do differently
+
+I'd separate the journal writer onto its own thread with a second channel, so a slow disk degrades throughput
+instead of latency. I'd also add property-based tests that replay random journals against a naive reference
+implementation.

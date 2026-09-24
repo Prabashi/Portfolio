@@ -1,0 +1,21 @@
+---
+import ProjectCard from '../../components/ProjectCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<Layout title="Projects" description="Systems I've designed and built, with the architecture and design decisions behind each one.">
+	<div class="container-page pt-14">
+		<p class="label">/projects</p>
+		<h1 class="mt-2 text-3xl font-semibold tracking-tight text-fg">Projects</h1>
+		<p class="mt-3 max-w-2xl text-muted">
+			Each project has a write-up covering the problem, the architecture, and the design decisions that mattered,
+			including what they cost.
+		</p>
+		<div class="mt-10 grid gap-4 sm:grid-cols-2">
+			{projects.map((project, i) => <ProjectCard project={project} index={i} />)}
+		</div>
+	</div>
+</Layout>
