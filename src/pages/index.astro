@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import Ticker from '../components/Ticker.astro';
-import { LINKS, SITE, STACK } from '../consts';
+import { LINKS, SHOW_PROJECTS, SITE, STACK } from '../consts';
 import Layout from '../layouts/Layout.astro';
 import { getPosts, getProjects } from '../lib/content';
 
@@ -40,7 +40,13 @@ const profile = [
 			</p>
 			<div class="mt-8 flex flex-wrap items-center gap-3">
 				<a href={LINKS.resume} class="btn btn-primary">résumé.pdf <span aria-hidden="true">↓</span></a>
-				<a href="/projects" class="btn">view projects <span aria-hidden="true">→</span></a>
+				{
+					SHOW_PROJECTS ? (
+						<a href="/projects" class="btn">view projects <span aria-hidden="true">→</span></a>
+					) : (
+						<a href="/blog" class="btn">read the blog <span aria-hidden="true">→</span></a>
+					)
+				}
 			</div>
 			<SocialLinks class="mt-6" />
 		</div>
@@ -67,14 +73,18 @@ const profile = [
 		</div>
 	</section>
 
-	<section class="container-page">
-		<SectionHeading title="selected work" href="/projects" />
-		<div class="grid gap-4 md:grid-cols-3">
-			{featured.map((project, i) => <ProjectCard project={project} index={i} />)}
-		</div>
-	</section>
+	{
+		SHOW_PROJECTS && (
+			<section class="container-page mb-20">
+				<SectionHeading title="selected work" href="/projects" />
+				<div class="grid gap-4 md:grid-cols-3">
+					{featured.map((project, i) => <ProjectCard project={project} index={i} />)}
+				</div>
+			</section>
+		)
+	}
 
-	<section class="container-page mt-20 grid gap-12 md:grid-cols-[1.6fr_1fr]">
+	<section class="container-page grid gap-12 md:grid-cols-[1.6fr_1fr]">
 		<div>
 			<SectionHeading title="writing" href="/blog" />
 			<PostList posts={posts} />

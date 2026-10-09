@@ -56,8 +56,12 @@ export const STACK = [
 	'JWT',
 ];
 
+// Projects are hidden until there's real work to show. To restore: set this to true
+// and rename src/pages/_projects back to src/pages/projects.
+export const SHOW_PROJECTS = false;
+
 export const NAV = [
-	{ href: '/projects', label: 'projects' },
+	...(SHOW_PROJECTS ? [{ href: '/projects', label: 'projects' }] : []),
 	{ href: '/blog', label: 'blog' },
 	{ href: '/about', label: 'about' },
 ];
