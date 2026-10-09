@@ -24,7 +24,7 @@ interface Props {
 }
 
 const { post, newer, older, all } = Astro.props;
-const { title, description, pubDate, updatedDate, tags, series, draft, placeholder } = post.data;
+const { title, description, pubDate, updatedDate, tags, series, draft, placeholder, canonicalURL } = post.data;
 const { Content } = await render(post);
 const minutes = readingMinutes(post.body);
 
@@ -35,7 +35,7 @@ const seriesPosts = series
 	: [];
 ---
 
-<Layout title={title} description={description} type="article">
+<Layout title={title} description={description} type="article" canonicalURL={canonicalURL}>
 	<article class="container-page pt-14">
 		<div class="mx-auto max-w-[70ch]">
 			<a href="/blog" class="font-mono text-xs text-muted hover:text-accent">← /blog</a>
@@ -103,6 +103,18 @@ const seriesPosts = series
 			<div class="prose mt-10">
 				<Content components={{ Figure, Decision }} />
 			</div>
+
+			{
+				canonicalURL && (
+					<p class="mt-10 font-mono text-xs text-faint">
+						Originally published on{' '}
+						<a href={canonicalURL} class="link">
+							Medium
+						</a>
+						.
+					</p>
+				)
+			}
 
 			<nav class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2" aria-label="More posts">
 				{

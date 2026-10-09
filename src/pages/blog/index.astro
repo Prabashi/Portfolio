@@ -7,7 +7,7 @@ const posts = await getPosts();
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 ---
 
-<Layout title="Blog" description="Notes on C#, .NET and building systems for capital markets.">
+<Layout title="Blog" description="Notes on building full-stack applications: React, TypeScript, Express, .NET and CI/CD.">
 	<div class="container-page pt-14">
 		<p class="label">/blog</p>
 		<h1 class="mt-2 text-3xl font-semibold tracking-tight text-fg">Writing</h1>

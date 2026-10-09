@@ -15,6 +15,8 @@ const blog = defineCollection({
 		seriesPart: z.number().optional(),
 		// Drafts are visible in `astro dev` but excluded from production builds.
 		draft: z.boolean().default(false),
+		// Original URL for posts republished from elsewhere (e.g. Medium); used as the canonical link.
+		canonicalURL: z.url().optional(),
 		// Marks sample content generated as a starting point. Remove once rewritten.
 		placeholder: z.boolean().default(false),
 	}),
