@@ -1,82 +1,80 @@
 ---
-import PlaceholderBadge from '../components/PlaceholderBadge.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import { SITE } from '../consts';
 import Layout from '../layouts/Layout.astro';
 
-// TODO: confirm order, years and titles. Listed newest first.
+// Listed newest first.
 const timeline = [
 	{
 		org: 'GIC',
-		period: '20XX – now',
+		period: 'Jan 2024 – May 2026',
 		role: 'Software Engineer',
-		note: 'Investment platforms for a sovereign wealth fund',
+		note: 'Funding & liquidity management for treasury',
 	},
 	{
 		org: 'WSO2',
-		period: '20XX – 20XX',
-		role: 'Software Engineer',
-		note: 'Integration and API infrastructure',
+		period: 'Jun 2021 – Jul 2023',
+		role: 'Software Engineer → Senior Software Engineer',
+		note: 'Internal platforms, microservices and auth',
 	},
 	{
 		org: 'DirectFN',
-		period: '20XX – 20XX',
+		period: 'Feb 2019 – Jun 2021',
 		role: 'Software Engineer',
-		note: 'Trading and market data platforms for regional exchanges and brokers',
+		note: 'Real-time trading and market data terminals',
 	},
 ];
 ---
 
-<Layout title="About" description={`How I spent ${SITE.yearsInIndustry} years building capital markets technology.`}>
+<Layout title="About" description={`${SITE.yearsInIndustry} years building business-critical software across trading, internal platforms and treasury.`}>
 	<div class="container-page pt-14">
 		<p class="label">/about</p>
-		<div class="mt-2 flex flex-wrap items-center gap-3">
-			<h1 class="text-3xl font-semibold tracking-tight text-fg">About</h1>
-			<PlaceholderBadge />
-		</div>
+		<h1 class="mt-2 text-3xl font-semibold tracking-tight text-fg">About</h1>
 
 		<div class="mt-10 grid gap-12 lg:grid-cols-[1fr_18rem]">
 			<!-- TODO: rewrite in your own voice. Keep it a story, not a CV. -->
 			<div class="prose">
 				<p class="text-xl leading-relaxed">
-					I've spent the last {SITE.yearsInIndustry} years building software where a wrong number costs real money
-					and a slow one costs a trade.
+					I've spent the last {SITE.yearsInIndustry} years building business-critical software, mostly in finance,
+					where the data has to be right and the people using it need it now.
 				</p>
 
-				<h2>DirectFN: learning where the latency hides</h2>
+				<h2>DirectFN: real-time from day one</h2>
 				<p>
-					I started at DirectFN, building trading and market data platforms used by brokers and exchanges across
-					the Middle East and South Asia. It was the best possible introduction to the domain: order types,
-					market sessions, corporate actions, and the difference between a system that works and one that works
-					at the open. I learned to read a flame graph before I learned to write a design doc.
+					I started out building trading and market data applications for brokerages and capital markets firms.
+					It was my introduction to real-time systems and to a domain where what's on the screen directly drives
+					decisions about money.
 				</p>
 
-				<h2>WSO2: thinking in platforms</h2>
+				<h2>WSO2: owning things end to end</h2>
 				<p>
-					At WSO2 I moved one layer down, to integration and API infrastructure that other teams build on. The
-					lesson was about contracts: versioning, backward compatibility, and designing so the next engineer, who
-					you'll never meet, can't easily misuse your API. It changed how I write code for everyone after.
+					At WSO2 I worked on the internal platforms the company runs on, across HR, finance and people
+					operations. I took products from database to UI, broke large backends into smaller services, and worked
+					on shared building blocks like authentication that other teams relied on. A lot of my
+					<a href="/blog">blog posts</a> come from this period.
 				</p>
 
-				<h2>GIC: correctness at scale</h2>
+				<h2>GIC: correctness in treasury systems</h2>
 				<p>
-					At GIC I work on platforms that support investment decisions for a sovereign wealth fund. The problems
-					are less about microseconds and more about correctness under failure: idempotent processing,
-					reconciliation, auditability, and systems that are calm to operate at 3am. This is where most of the
-					ideas in my <a href="/blog">blog series</a> come from.
+					At GIC I worked on treasury systems that help portfolio managers handle funding and liquidity. The work
+					was integration-heavy: moving orders between internal and external systems, keeping data consistent
+					across many sources, and giving the business a live, trustworthy view of where things stand.
 				</p>
 
 				<h2>What I care about</h2>
 				<ul>
-					<li><strong>Boring, explicit designs.</strong> A single writer beats a clever lock.</li>
-					<li><strong>Failure as a first-class path.</strong> Retries, replays and duplicates are normal, not edge cases.</li>
-					<li><strong>Writing things down.</strong> Design notes outlive the code and the people who wrote it.</li>
+					<li><strong>Simple, explicit designs</strong> that are easy to extend without breaking what's already there.</li>
+					<li><strong>Treating failure as normal.</strong> Delays, retries and mismatches will happen, so the system should expect them.</li>
+					<li><strong>Tests that catch real bugs</strong>, not just ones that make the coverage number go up.</li>
+					<li><strong>Working closely with the business</strong>, from the first conversation about a feature to running it in production.</li>
 				</ul>
 
+				{/*
 				<p>
 					Outside work: TODO, a line or two about you as a person (it's what people remember from an about
 					page).
 				</p>
+				*/}
 			</div>
 
 			<aside class="space-y-6">
