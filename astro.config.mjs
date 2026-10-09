@@ -8,8 +8,8 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	// TODO: replace with your domain (also used for canonical URLs, sitemap and RSS).
-	site: 'https://example.com',
+	// Used for canonical URLs, sitemap and RSS.
+	site: 'https://prabhashi.com',
 	integrations: [mdx(), sitemap(), react()],
 
 	fonts: [
