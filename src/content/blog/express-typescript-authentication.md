@@ -5,7 +5,7 @@ pubDate: 2023-09-15
 tags: ["express", "mongodb", "typescript", "authentication", "jwt-token"]
 series: "Full-stack auth with React + Express"
 seriesPart: 3
-canonicalURL: "https://blog.stackademic.com/create-a-backend-application-using-express-typescript-and-handle-authentication-1f67be81da60"
+canonicalURL: "https://medium.com/@prabhashi.mm/create-a-backend-application-using-express-typescript-and-handle-authentication-1f67be81da60"
 ---
 
 In this article, we’ll create a **ExpressJS** backend with **TypeScript**, implement **authentication** and create a **custom middleware** to validate user authentication and to handle errors. We’ll use **MongoDB** to store our user data.
@@ -683,11 +683,3 @@ Create a React application with Login / Register pages
 Manage your React application state using Redux Toolkit
 
 [Manage your React (TypeScript) application state using Redux Toolkit](/blog/redux-toolkit-state-management/)
-
-## Stackademic
-
-_Thank you for reading until the end. Before you go:_
-
-- _Please consider _**_clapping_** _and _**_following_** _the writer! 👏_
-- _Follow us on _[**_Twitter(X)_**](https://twitter.com/stackademichq)_, _[**_LinkedIn_**](https://www.linkedin.com/company/stackademic)_, and _[**_YouTube_**](https://www.youtube.com/c/stackademic)**_._**
-- _Visit _[**_Stackademic.com_**](http://stackademic.com/) _to find out more about how we are democratizing free programming education around the world._

@@ -5,7 +5,7 @@ pubDate: 2023-09-15
 tags: ["authentication", "react-router-6", "typescript", "react", "redux-toolkit"]
 series: "Full-stack auth with React + Express"
 seriesPart: 2
-canonicalURL: "https://blog.stackademic.com/manage-your-react-typescript-application-state-using-redux-toolkit-926d3b4abaa7"
+canonicalURL: "https://medium.com/@prabhashi.mm/manage-your-react-typescript-application-state-using-redux-toolkit-926d3b4abaa7"
 ---
 
 **Redux** is a JS library that can be used to manage the application state in your app in a centralized way. You’ll be retrieving the application state (the state that’s used globally or in multiple components) from a centralized location and will be performing centrally defined actions to update the state.
@@ -690,11 +690,3 @@ Then we’ll continue to add more features to the application.
 Create a React app with Login / Register pages.
 
 [Create a simple React app (TypeScript) with Login / Register pages using create-react-app](/blog/react-typescript-login-register/)
-
-## Stackademic
-
-_Thank you for reading until the end. Before you go:_
-
-- _Please consider _**_clapping_** _and _**_following_** _the writer! 👏_
-- _Follow us on _[**_Twitter(X)_**](https://twitter.com/stackademichq)_, _[**_LinkedIn_**](https://www.linkedin.com/company/stackademic)_, and _[**_YouTube_**](https://www.youtube.com/c/stackademic)**_._**
-- _Visit _[**_Stackademic.com_**](http://stackademic.com/) _to find out more about how we are democratizing free programming education around the world._

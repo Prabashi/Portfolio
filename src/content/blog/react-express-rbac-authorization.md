@@ -5,7 +5,7 @@ pubDate: 2023-09-20
 tags: ["react", "express", "role-based-access-control", "authorization", "jwt-token"]
 series: "Full-stack auth with React + Express"
 seriesPart: 5
-canonicalURL: "https://blog.stackademic.com/handle-authorization-in-react-express-typescript-application-using-role-based-access-control-2d3ab0c1dd38"
+canonicalURL: "https://medium.com/@prabhashi.mm/handle-authorization-in-react-express-typescript-application-using-role-based-access-control-2d3ab0c1dd38"
 ---
 
 We can use **Role Based Access Control (RBAC)** when we need to **restrict** the users from accessing pages / backend APIs, based on their **role** (permission level). For this tutorial, you need to have an application which already handles user authentication using **token-based authentication**. This way, we’ll have a **JWT token** we can use to include and retrieve user roles.
@@ -663,11 +663,3 @@ Manage notifications in your React application
 Create an Express backend application to handle authentication
 
 [Create a backend application using Express (TypeScript) and handle authentication](/blog/express-typescript-authentication/)
-
-## Stackademic
-
-_Thank you for reading until the end. Before you go:_
-
-- _Please consider _**_clapping_** _and _**_following_** _the writer! 👏_
-- _Follow us on _[**_Twitter(X)_**](https://twitter.com/stackademichq)_, _[**_LinkedIn_**](https://www.linkedin.com/company/stackademic)_, and _[**_YouTube_**](https://www.youtube.com/c/stackademic)**_._**
-- _Visit _[**_Stackademic.com_**](http://stackademic.com/) _to find out more about how we are democratizing free programming education around the world._

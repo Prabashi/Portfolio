@@ -5,7 +5,7 @@ pubDate: 2023-09-19
 tags: ["redux-toolkit", "redux-middleware", "react", "material-ui", "typescript"]
 series: "Full-stack auth with React + Express"
 seriesPart: 4
-canonicalURL: "https://blog.stackademic.com/handle-notifications-in-your-react-application-typescript-using-redux-toolkit-and-use-a-custom-d2e1c9de9db2"
+canonicalURL: "https://medium.com/@prabhashi.mm/handle-notifications-in-your-react-application-typescript-using-redux-toolkit-and-use-a-custom-d2e1c9de9db2"
 ---
 
 If you’re following the [series](/blog/redux-toolkit-state-management/), you already have a **React** application and a **Express** backend which handles **authentication**. But, we still haven’t implemented a method to show the users **any error / success messages** in the application.
@@ -721,11 +721,3 @@ Manage your React application state using Redux Toolkit
 Create a Express backend application to handle authentication
 
 [Create a backend application using Express (TypeScript) and handle authentication](/blog/express-typescript-authentication/)
-
-## Stackademic
-
-_Thank you for reading until the end. Before you go:_
-
-- _Please consider _**_clapping_** _and _**_following_** _the writer! 👏_
-- _Follow us on _[**_Twitter(X)_**](https://twitter.com/stackademichq)_, _[**_LinkedIn_**](https://www.linkedin.com/company/stackademic)_, and _[**_YouTube_**](https://www.youtube.com/c/stackademic)**_._**
-- _Visit _[**_Stackademic.com_**](http://stackademic.com/) _to find out more about how we are democratizing free programming education around the world._
