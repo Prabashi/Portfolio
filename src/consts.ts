@@ -5,35 +5,55 @@ export const SITE = {
 	name: 'Prabhashi',
 	// Short handle shown in the header prompt, e.g. `prabhashi@dev`.
 	handle: 'prabhashi',
-	title: 'Prabhashi · Capital Markets Engineer',
+	title: 'Prabhashi · Software Engineer',
 	description:
-		'Software engineer with 7 years in capital markets technology. Low-latency .NET services, trading platforms, and the design decisions behind them.',
-	role: 'Senior Software Engineer',
+		'Full-stack software engineer with 7 years building business-critical applications in C# / .NET and React / TypeScript: integrations, real-time data, and the design decisions behind them.',
+	role: 'Software Engineer',
 	yearsInIndustry: 7,
 	location: 'Singapore', // TODO: confirm
-	email: 'prabhashi.TODO@gmail.com',
+	email: 'prabhashi.mm@gmail.com',
 };
 
 export const LINKS = {
-	github: 'https://github.com/TODO', // TODO
-	linkedin: 'https://www.linkedin.com/in/TODO', // TODO
+	github: 'https://github.com/Prabashi',
+	linkedin: 'https://www.linkedin.com/in/prabhashi-meddegoda',
 	// Drop your PDF into public/ with this name.
 	resume: '/resume.pdf',
 };
 
 export const STACK = [
 	'C#',
-	'.NET 8',
+	'.NET',
 	'ASP.NET Core',
-	'System.Threading.Channels',
-	'Kafka',
-	'SQL Server',
+	'TypeScript',
+	'JavaScript',
+	'SQL',
+	'REST',
+	'GraphQL',
+	'SignalR',
+	'Entity Framework Core',
+	'Dapper',
+	'Hangfire',
+	'React',
+	'Redux Toolkit',
+	'RTK Query',
+	'AG Grid',
+	'MUI',
 	'PostgreSQL',
 	'Redis',
-	'React',
-	'TypeScript',
+	'MySQL',
+	'xUnit',
+	'NSubstitute',
+	'Playwright',
+	'Jest',
+	'Cucumber',
 	'Docker',
-	'Kubernetes',
+	'GitHub Actions',
+	'AWS',
+	'Datadog',
+	'OAuth 2.0',
+	'OIDC',
+	'JWT',
 ];
 
 export const NAV = [

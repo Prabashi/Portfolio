@@ -3,12 +3,14 @@ import { STACK } from '../consts';
 
 // A slow ticker tape of the stack. Duplicated once so the loop is seamless.
 const items = [...STACK, ...STACK];
+// Scale duration with the list so the scroll speed stays constant (~5s per item).
+const duration = `${STACK.length * 5}s`;
 ---
 
 <div class="overflow-hidden border-b border-line bg-surface" aria-hidden="true">
 	<div
 		class="ticker-track flex w-max gap-8 py-1.5 font-mono text-[11px] tracking-wider text-muted uppercase"
-		style="animation: ticker 60s linear infinite;"
+		style={`animation: ticker ${duration} linear infinite;`}
 	>
 		{
 			items.map((s, i) => (
