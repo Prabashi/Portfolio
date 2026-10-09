@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import Ticker from '../components/Ticker.astro';
-import { LINKS, SHOW_PROJECTS, SITE, STACK } from '../consts';
+import { SHOW_PROJECTS, SITE, STACK } from '../consts';
 import Layout from '../layouts/Layout.astro';
 import { getPosts, getProjects } from '../lib/content';
 
@@ -39,12 +39,11 @@ const profile = [
 				WSO2 and DirectFN, mostly in C# / .NET and React / TypeScript.
 			</p>
 			<div class="mt-8 flex flex-wrap items-center gap-3">
-				<a href={LINKS.resume} class="btn btn-primary">résumé.pdf <span aria-hidden="true">↓</span></a>
 				{
 					SHOW_PROJECTS ? (
-						<a href="/projects" class="btn">view projects <span aria-hidden="true">→</span></a>
+						<a href="/projects" class="btn btn-primary">view projects <span aria-hidden="true">→</span></a>
 					) : (
-						<a href="/blog" class="btn">read the blog <span aria-hidden="true">→</span></a>
+						<a href="/blog" class="btn btn-primary">read the blog <span aria-hidden="true">→</span></a>
 					)
 				}
 			</div>

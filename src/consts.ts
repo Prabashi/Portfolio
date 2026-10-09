@@ -17,8 +17,6 @@ export const SITE = {
 export const LINKS = {
 	github: 'https://github.com/Prabashi',
 	linkedin: 'https://www.linkedin.com/in/prabhashi-meddegoda',
-	// Drop your PDF into public/ with this name.
-	resume: '/resume.pdf',
 };
 
 export const STACK = [
